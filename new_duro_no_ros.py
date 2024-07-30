@@ -101,7 +101,7 @@ def cb_SBP_MSG_IMU_AUX(msg_imu_aux, **source):
 def main():
 
     parser = argparse.ArgumentParser()
-    f = open("ROBOT_imu_databnf.csv", "w", newline="")
+    f = open("Sim_Turbulence.csv", "w", newline="")
     fieldnames = ["Time", "AccX", "AccY", "AccZ", "GyrX", "GyrY", "GyrZ"]
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
@@ -111,7 +111,7 @@ def main():
 
         "--port",
 
-        default=['COM6'],
+        default=['/dev/ttyUSB0'],
 
         nargs=1,
 
@@ -119,6 +119,13 @@ def main():
 
     args = parser.parse_args()
 
+    #8gs / s^2
+    MAX_RANGE_ACC = 8
+
+    # 125 degrees/s
+    MAX_RANGE_ANGULAR_VEL = 125
+
+    NUM_RESOLUTION_TICS = 32768
 
 
     # Open a connection to Piksi using the default baud rate (1Mbaud)
@@ -133,12 +140,12 @@ def main():
 
                     print(msg)
                     writer.writerow({"Time" : time.time() - start,
-                                     "AccX": msg.acc_x,
-                                     "AccY": msg.acc_y,
-                                     "AccZ": msg.acc_z,
-                                     "GyrX": msg.gyr_x,
-                                     "GyrY": msg.gyr_y,
-                                     "GyrZ": msg.gyr_z})
+                                     "AccX": (int(msg.acc_x) * MAX_RANGE_ACC / NUM_RESOLUTION_TICS * g_value),
+                                     "AccY": (int(msg.acc_y) * MAX_RANGE_ACC / NUM_RESOLUTION_TICS * g_value),
+                                     "AccZ": (int(msg.acc_z )* MAX_RANGE_ACC / NUM_RESOLUTION_TICS * g_value),
+                                     "GyrX": (int(msg.gyr_x) * MAX_RANGE_ANGULAR_VEL / NUM_RESOLUTION_TICS),
+                                     "GyrY": (int(msg.gyr_y) * MAX_RANGE_ANGULAR_VEL / NUM_RESOLUTION_TICS),
+                                     "GyrZ": (int(msg.gyr_z) * MAX_RANGE_ANGULAR_VEL / NUM_RESOLUTION_TICS)})
 
 
             except KeyboardInterrupt:
