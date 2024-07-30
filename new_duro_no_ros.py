@@ -101,7 +101,7 @@ def cb_SBP_MSG_IMU_AUX(msg_imu_aux, **source):
 def main():
 
     parser = argparse.ArgumentParser()
-    f = open("Sim_Turbulence.csv", "w", newline="")
+    f = open("Sim_Turbulence2.csv", "w", newline="")
     fieldnames = ["Time", "AccX", "AccY", "AccZ", "GyrX", "GyrY", "GyrZ"]
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()

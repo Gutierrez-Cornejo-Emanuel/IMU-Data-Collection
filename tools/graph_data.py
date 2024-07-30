@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import csv
 
 def main():
-    filename = "Sim_Turbulence.csv"
+    filename = "Sim_Turbulence2.csv"
     f = open(filename, "r", newline='')
     reader = csv.DictReader(f)
 
