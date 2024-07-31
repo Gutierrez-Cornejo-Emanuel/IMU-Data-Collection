@@ -109,10 +109,7 @@ def main():
 
     NUM_RESOLUTION_TICS = 32768
 
-    f = open("imu_data.csv", "w", newline="")
-    fieldnames = ["Time", "AccX", "AccY", "AccZ", "GyrX", "GyrY", "GyrZ"]
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
-    writer.writeheader()
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -129,7 +126,7 @@ def main():
 
     args = parser.parse_args()
 
-    time = 0
+    start = tim
 
     # Open a connection to Piksi using the default baud rate (1Mbaud)
 
